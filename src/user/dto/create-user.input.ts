@@ -1,23 +1,21 @@
-import { IsEmail, IsStrongPassword, Max, Min } from "class-validator";
+import { IsEmail, IsStrongPassword, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class CreateUserInput {
-    @Min(8)
-    @Max(50)
+    @MinLength(2)
+    @MaxLength(50)
     username: string;
 
     @IsEmail()
+    @MaxLength(500)
     email: string;
 
-    @Min(2)
-    @Max(50)
+    @MinLength(2)
+    @MaxLength(50)
     firstName: string;
-    @Min(2)
-    @Max(50)
-    lastName: string;
 
-    @Min(4)
-    @Max(110)
-    fullName: string;
+    @MinLength(2)
+    @MaxLength(50)
+    lastName: string;
 
     @IsStrongPassword()
     password: string;

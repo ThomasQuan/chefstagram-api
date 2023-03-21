@@ -13,7 +13,7 @@ datasource db {
 model User {
   id            String       @id @unique @default(uuid())
   username      String       @unique @db.VarChar(50)
-  email         String       @unique @db.VarChar(100)
+  email         String       @unique @db.VarChar(500)
   firstName     String       @db.VarChar(50)
   lastName      String       @db.VarChar(50)
   fullName      String       @db.VarChar(110)
@@ -28,34 +28,42 @@ model User {
   following     User[]       @relation("UserFollows")
   role          Role?
   viewer        Viewer[]
+  isDeleted     Boolean      @default(false)
+  deletedDate   DateTime?
 }
 
 model Role {
-  id         String   @id @unique @default(uuid())
-  name       String   @db.VarChar(150)
-  User       User?    @relation(fields: [userId], references: [id])
-  userId     String?  @unique
-  permission String[] @unique @db.VarChar(300)
+  id          String    @id @unique @default(uuid())
+  name        String    @db.VarChar(150)
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      String?   @unique
+  permission  String[]  @unique @db.VarChar(300)
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model UnitSetting {
-  id        String  @id @unique @default(uuid())
-  name      String  @db.VarChar(150)
-  volume    String
-  mass      String
-  dimension String
-  distance  String
-  User      User?   @relation(fields: [userId], references: [id])
-  userId    String? @unique
+  id          String    @id @unique @default(uuid())
+  name        String    @db.VarChar(150)
+  volume      String
+  mass        String
+  dimension   String
+  distance    String
+  User        User?     @relation(fields: [userId], references: [id])
+  userId      String?   @unique
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model Gender {
-  id          String @id @unique @default(uuid())
-  name        String @db.VarChar(150)
-  description String @db.VarChar(2000)
-  slug        String @db.VarChar(200)
-  User        User   @relation(fields: [userId], references: [id])
-  userId      String @unique
+  id          String    @id @unique @default(uuid())
+  name        String    @db.VarChar(150)
+  description String    @db.VarChar(2000)
+  slug        String    @db.VarChar(200)
+  User        User      @relation(fields: [userId], references: [id])
+  userId      String    @unique
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model Recipe {
@@ -70,45 +78,57 @@ model Recipe {
   User         User          @relation(fields: [userId], references: [id])
   userId       String
   viewer       Viewer[]
+  isDeleted    Boolean       @default(false)
+  deletedDate  DateTime?
 }
 
 model Viewer {
   id String @id @unique @default(uuid())
 
-  viewDate DateTime
-  Recipe   Recipe?  @relation(fields: [recipeId], references: [id])
-  recipeId String?
-  userId   String?
-  User     User?    @relation(fields: [userId], references: [id])
+  viewDate    DateTime
+  Recipe      Recipe?   @relation(fields: [recipeId], references: [id])
+  recipeId    String?
+  userId      String?
+  User        User?     @relation(fields: [userId], references: [id])
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model Reaction {
-  id       String @id @unique @default(uuid())
-  type     String
-  Recipe   Recipe @relation(fields: [recipeId], references: [id])
-  recipeId String
+  id          String    @id @unique @default(uuid())
+  type        String
+  Recipe      Recipe    @relation(fields: [recipeId], references: [id])
+  recipeId    String
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model Comment {
-  id       String @id @unique @default(uuid())
-  Recipe   Recipe @relation(fields: [recipeId], references: [id])
-  recipeId String
+  id          String    @id @unique @default(uuid())
+  Recipe      Recipe    @relation(fields: [recipeId], references: [id])
+  recipeId    String
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model Requirement {
-  id         String      @id @unique @default(uuid())
-  quantity   Int
-  Recipe     Recipe      @relation(fields: [recipeId], references: [id])
-  recipeId   String
-  unitId     String      @db.Char(128)
-  ingredient Ingredient?
+  id          String      @id @unique @default(uuid())
+  quantity    Int
+  Recipe      Recipe      @relation(fields: [recipeId], references: [id])
+  recipeId    String
+  unitId      String      @db.Char(128)
+  ingredient  Ingredient?
+  isDeleted   Boolean     @default(false)
+  deletedDate DateTime?
 }
 
 model Category {
-  id          String   @id @unique @default(uuid())
-  name        String   @db.VarChar(200)
-  description String   @db.VarChar(2000)
+  id          String    @id @unique @default(uuid())
+  name        String    @db.VarChar(200)
+  description String    @db.VarChar(2000)
   recipies    Recipe[]
+  isDeleted   Boolean   @default(false)
+  deletedDate DateTime?
 }
 
 model Ingredient {
@@ -117,4 +137,6 @@ model Ingredient {
   description   String      @db.VarChar(2000)
   Requirement   Requirement @relation(fields: [requirementId], references: [id])
   requirementId String      @unique
+  isDeleted     Boolean     @default(false)
+  deletedDate   DateTime?
 }

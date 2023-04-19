@@ -6,26 +6,22 @@ import { join } from "path";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { PrismaModule } from "./prisma/prisma.module";
+import { PrismaService } from "./prisma/prisma.service";
 import { RecipesModule } from "./recipes/recipes.module";
-import { UserModule } from "./user/users.module";
+import { UsersModule } from "./users/users.module";
 
 @Module({
     imports: [
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
-            typePaths: ["./**/*.graphql"],
-            definitions: {
-                path: join(process.cwd(), "src/types/graphql.ts"),
-                outputAs: "class",
-                emitTypenameField: true
-            },
-            playground: true
+            autoSchemaFile: join(process.cwd(), "src/schema.gql"),
+            buildSchemaOptions: { dateScalarMode: "timestamp" }
         }),
-        UserModule,
-        RecipesModule,
-        PrismaModule
+        PrismaModule,
+        UsersModule,
+        RecipesModule
     ],
     controllers: [AppController],
-    providers: [AppService]
+    providers: [PrismaService, AppService]
 })
 export class AppModule {}

@@ -1,0 +1,75 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Recipe {
+  id: ID!
+}
+
+type User {
+  id: ID!
+  username: String!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+
+  """List of recipe this user is connected to"""
+  recipes: [Recipe!]!
+}
+
+type Query {
+  user(id: ID!): User!
+  users(args: UsersWhereInput): [User!]!
+  recipes: [Recipe!]!
+  recipe(id: ID!): Recipe!
+}
+
+input UsersWhereInput {
+  fullName: String
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  editUser(editUserInput: EditUserInput!, relationModification: RelationModificationInput): User!
+  createRecipe(createRecipeInput: CreateRecipeInput!): Recipe!
+  editRecipe(editRecipeInput: EditRecipeInput!, relationModification: RelationModificationInput): Recipe!
+}
+
+input CreateUserInput {
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input EditUserInput {
+  username: String
+  firstName: String
+  lastName: String
+  email: String
+  id: ID!
+}
+
+input RelationModificationInput {
+  requirements: ConnectDisconnect!
+}
+
+input ConnectDisconnect {
+  """Specify the list of ID to connect to"""
+  connect: [ID!]!
+
+  """Specify the list of ID to disconnect from"""
+  disconnect: [ID!]!
+}
+
+input CreateRecipeInput {
+  name: String!
+  userId: ID!
+}
+
+input EditRecipeInput {
+  name: String
+  userId: ID
+  id: ID!
+}

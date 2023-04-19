@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Leave it as it's right now, gonna play around with spring boot a bit 
 
 ## Installation
 
